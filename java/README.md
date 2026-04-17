@@ -11,3 +11,28 @@
 6. Login với Admin: admin/123456
               User: user1/123456 (ít quyền hơn Admin)
           Thí sinh: 001204000001/123456 (mặc định là CCCD/123456)
+
+## Chạy web API
+
+1. Mở terminal tại thư mục `tuyensinh`
+2. Chạy `mvn spring-boot:run`
+3. Web API mặc định chạy tại `http://localhost:8080/api`
+
+### Một số endpoint
+
+- `GET /api/health`
+- `POST /api/auth/login`
+- `GET /api/thisinhs?page=1&pageSize=20&keyword=`
+- `GET /api/thisinhs/{id}`
+- `GET /api/nganhs`
+- `GET /api/nguyenvongs/tra-cuu?keyword=001204000001`
+- `POST /api/xettuyen/run`
+
+Ví dụ login:
+
+```json
+{
+    "username": "admin",
+    "password": "123456"
+}
+```
