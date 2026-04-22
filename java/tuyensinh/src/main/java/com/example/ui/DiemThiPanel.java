@@ -16,6 +16,7 @@ import java.util.List;
 
 public class DiemThiPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private DiemThiDAO dao;
 
@@ -126,10 +127,6 @@ public class DiemThiPanel extends JPanel {
         btnImport = new JButton("Import CSV");
 
         btnThongKe = new JButton("📊 Thống kê");
-        btnThongKe.setBackground(new Color(0, 102, 204));
-        btnThongKe.setForeground(Color.WHITE);
-        btnThongKe.setOpaque(true);
-        btnThongKe.setBorderPainted(false);
 
         buttonPanel.add(btnAdd);
         buttonPanel.add(btnUpdate);
@@ -137,6 +134,13 @@ public class DiemThiPanel extends JPanel {
         buttonPanel.add(btnClear);
         buttonPanel.add(btnImport);
         buttonPanel.add(btnThongKe); // Add nút vào panel
+        UiButtons.stylePrimary(btnAdd);
+        UiButtons.stylePrimary(btnUpdate);
+        UiButtons.styleSecondary(btnImport);
+        UiButtons.stylePrimary(btnThongKe);
+        UiButtons.styleDanger(btnDelete);
+        UiButtons.styleSecondary(btnClear);
+        UiButtons.equalizeButtonsInContainer(buttonPanel);
 
         // --- 3. BẢNG DỮ LIỆU ---
         String[] columns = { "ID", "CCCD", "SBD", "PT", "Toán", "Lý", "Hóa", "Sinh", "Sử", "Địa", "Văn", "N1_Thi",
@@ -148,30 +152,25 @@ public class DiemThiPanel extends JPanel {
             }
         };
         table = new JTable(tableModel);
-
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-        for (int i = 4; i < columns.length; i++) {
-            table.getColumnModel().getColumn(i).setPreferredWidth(50);
-        }
-        table.getColumnModel().getColumn(1).setPreferredWidth(120);
-        table.setRowHeight(25);
+        UiTableTheme.apply(table);
 
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                     boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (!isSelected)
-                    c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(245, 245, 245));
+                UiTableTheme.applyDataRowAppearance(table, c, row, isSelected);
                 return c;
             }
         });
 
+        tableScroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        UiTableColumns.install(table, tableScroll);
+
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
-        centerPanel.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
+        centerPanel.add(tableScroll, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
 
         loadData();
@@ -191,6 +190,7 @@ public class DiemThiPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private Double parseDouble(String str) {

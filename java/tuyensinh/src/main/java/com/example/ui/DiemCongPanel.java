@@ -20,6 +20,7 @@ import java.util.List;
 
 public class DiemCongPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private DiemCongDAO dao;
     private NganhDAO nganhDAO;
@@ -117,6 +118,12 @@ public class DiemCongPanel extends JPanel {
 
         buttonPanel.add(btnAdd); buttonPanel.add(btnUpdate); buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear); buttonPanel.add(btnImport);
+        UiButtons.stylePrimary(btnAdd);
+        UiButtons.stylePrimary(btnUpdate);
+        UiButtons.styleSecondary(btnImport);
+        UiButtons.styleDanger(btnDelete);
+        UiButtons.styleSecondary(btnClear);
+        UiButtons.equalizeButtonsInContainer(buttonPanel);
 
         // --- 3. BẢNG DỮ LIỆU ---
         String[] columns = { "ID", "CCCD", "Ngành", "Tổ Hợp", "Phương Thức", "Điểm CC", "Điểm ƯTXT", "Tổng Cộng", "Ghi Chú" };
@@ -124,21 +131,24 @@ public class DiemCongPanel extends JPanel {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
         table = new JTable(tableModel);
-        table.setRowHeight(25);
         table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 12));
+        UiTableTheme.apply(table);
 
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (!isSelected) c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(245, 245, 245));
+                UiTableTheme.applyDataRowAppearance(table, c, row, isSelected);
                 return c;
             }
         });
 
+        tableScroll = new JScrollPane(table);
+        UiTableColumns.install(table, tableScroll);
+
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
-        centerPanel.add(new JScrollPane(table), BorderLayout.CENTER);
+        centerPanel.add(tableScroll, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
 
         loadComboBoxData(); // Load dữ liệu cho ComboBox
@@ -154,6 +164,7 @@ public class DiemCongPanel extends JPanel {
                 loadComboBoxData();
                 if (selNganh != null) cbMaNganh.setSelectedItem(selNganh);
                 if (selToHop != null) cbMaToHop.setSelectedItem(selToHop);
+                UiTableColumns.refresh(table);
             }
         });
     }
@@ -187,6 +198,7 @@ public class DiemCongPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private void clearForm() {

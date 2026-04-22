@@ -1,12 +1,19 @@
 package com.example.ui;
 
 import com.example.dao.UserDAO;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class LoginFrame extends JFrame {
+    /** Viền ô nhập — xám rất nhạt */
+    private static final Color FIELD_BORDER = new Color(226, 232, 240);
+    /** Phụ đề */
+    private static final Color SUBTITLE = new Color(100, 116, 139);
+    /** Nhãn trường — xám đậm, semi-bold */
+    private static final Color LABEL = new Color(71, 85, 105);
+
     private JTextField txtUsername;
     private JPasswordField txtPassword;
     private JButton btnLogin;
@@ -14,53 +21,111 @@ public class LoginFrame extends JFrame {
 
     public LoginFrame() {
         userDAO = new UserDAO();
-        JButton btnTraCuuNhanh = new JButton("Tra cứu nhanh");
-        btnTraCuuNhanh.setForeground(new Color(0, 102, 204));
 
         setTitle("Hệ Thống Xét Tuyển");
-        setSize(350, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(UiFrameDefaults.MAIN_SIZE);
+        setMinimumSize(UiFrameDefaults.MAIN_MIN);
         setLocationRelativeTo(null);
-        setResizable(false);
 
-        // Tạo các thành phần giao diện
-        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        UiShellTheme.ShellGradientPanel root = new UiShellTheme.ShellGradientPanel();
+        root.setLayout(new GridBagLayout());
+        setContentPane(root);
 
-        panel.add(new JLabel("Tài khoản:"));
+        UiShellTheme.LoginCardPanel card = new UiShellTheme.LoginCardPanel(new BorderLayout());
+        card.setBorder(new EmptyBorder(40, 44, 40, 44));
+
+        JLabel title = new JLabel("Hệ Thống Xét Tuyển", SwingConstants.CENTER);
+        title.setFont(title.getFont().deriveFont(Font.BOLD, 25f));
+        title.setForeground(Color.BLACK);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel sub = new JLabel("Đăng nhập tài khoản quản trị / thí sinh", SwingConstants.CENTER);
+        sub.setForeground(SUBTITLE);
+        sub.setFont(sub.getFont().deriveFont(Font.PLAIN, 14f));
+        sub.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel head = new JPanel();
+        head.setOpaque(false);
+        head.setLayout(new BoxLayout(head, BoxLayout.Y_AXIS));
+        head.add(title);
+        head.add(Box.createVerticalStrut(12));
+        head.add(sub);
+
+        JPanel body = new JPanel(new GridBagLayout());
+        body.setOpaque(false);
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.gridx = 0;
+        gc.gridy = 0;
+        gc.weightx = 1;
+        gc.fill = GridBagConstraints.HORIZONTAL;
+        gc.insets = new Insets(0, 0, 6, 0);
+
+        JLabel lUser = new JLabel("Tài khoản");
+        lUser.setForeground(LABEL);
+        lUser.setFont(lUser.getFont().deriveFont(Font.BOLD, 12f));
+        body.add(lUser, gc);
+
+        gc.gridy++;
         txtUsername = new JTextField();
-        panel.add(txtUsername);
+        styleField(txtUsername);
+        body.add(txtUsername, gc);
 
-        panel.add(new JLabel("Mật khẩu:"));
+        gc.gridy++;
+        gc.insets = new Insets(20, 0, 6, 0);
+        JLabel lPass = new JLabel("Mật khẩu");
+        lPass.setForeground(LABEL);
+        lPass.setFont(lPass.getFont().deriveFont(Font.BOLD, 12f));
+        body.add(lPass, gc);
+
+        gc.gridy++;
+        gc.insets = new Insets(0, 0, 28, 0);
         txtPassword = new JPasswordField();
-        panel.add(txtPassword);
+        styleField(txtPassword);
+        body.add(txtPassword, gc);
 
-        panel.add(new JLabel("")); // Ô trống để căn chỉnh
+        gc.gridy++;
+        gc.insets = new Insets(0, 0, 12, 0);
         btnLogin = new JButton("Đăng nhập");
-        panel.add(btnLogin);
+        UiButtons.stylePrimary(btnLogin);
+        body.add(btnLogin, gc);
 
-        panel.add(new JLabel("")); // Ô trống
-        panel.add(btnTraCuuNhanh);
+        gc.gridy++;
+        gc.insets = new Insets(0, 0, 0, 0);
+        JButton btnTraCuuNhanh = new JButton("Tra cứu nhanh");
+        UiButtons.styleSecondary(btnTraCuuNhanh);
+        body.add(btnTraCuuNhanh, gc);
 
-        // Thêm panel vào khung
-        add(panel);
+        card.add(head, BorderLayout.NORTH);
+        card.add(body, BorderLayout.CENTER);
 
-        // Bắt sự kiện khi click nút Đăng nhập
-        btnLogin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleLogin();
-            }
-        });
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(44, 52, 44, 52);
+        root.add(card, c);
+        card.setPreferredSize(UiFrameDefaults.LOGIN_CARD);
 
-        // Sự kiện nút Tra cứu nhanh
+        btnLogin.addActionListener(e -> handleLogin());
         btnTraCuuNhanh.addActionListener(e -> {
             JFrame searchFrame = new JFrame("Tra Cứu Kết Quả Tuyển Sinh");
-            searchFrame.setSize(800, 500);
-            searchFrame.setLocationRelativeTo(null);
-            searchFrame.add(new TraCuuPanel()); // Sử dụng lại Panel tra cứu bạn đã làm
+            searchFrame.setSize(UiFrameDefaults.MAIN_SIZE);
+            searchFrame.setMinimumSize(UiFrameDefaults.MAIN_MIN);
+            searchFrame.setLocationRelativeTo(this);
+            searchFrame.add(new TraCuuPanel());
             searchFrame.setVisible(true);
         });
+    }
+
+    private static void styleField(JComponent field) {
+        field.setFont(field.getFont().deriveFont(14f));
+        field.setBackground(Color.WHITE);
+        field.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(FIELD_BORDER, 1, true),
+                new EmptyBorder(11, 13, 11, 13)));
     }
 
     private void handleLogin() {
@@ -72,23 +137,19 @@ public class LoginFrame extends JFrame {
             return;
         }
 
-        // Gọi hàm trả về Object (có thể là User hoặc ThiSinh)
         Object result = userDAO.authenticateUser(username, password);
 
         if (result != null) {
-            this.dispose(); // Đóng form login
+            this.dispose();
 
             if (result instanceof com.example.entity.User) {
-                // TRƯỜNG HỢP 1: LÀ ADMIN
                 com.example.entity.User admin = (com.example.entity.User) result;
-                JOptionPane.showMessageDialog(null, "Đăng nhập ADMIN thành công!");
+                // JOptionPane.showMessageDialog(null, "Đăng nhập ADMIN thành công!");
                 new AdminFrame(admin).setVisible(true);
-            } 
-            else if (result instanceof com.example.entity.ThiSinh) {
-                // TRƯỜNG HỢP 2: LÀ THÍ SINH
+            } else if (result instanceof com.example.entity.ThiSinh) {
                 com.example.entity.ThiSinh ts = (com.example.entity.ThiSinh) result;
                 JOptionPane.showMessageDialog(null, "Chào thí sinh: " + ts.getHo() + " " + ts.getTen());
-                new UserFrame(ts).setVisible(true); // Mở giao diện dành riêng cho thí sinh
+                new UserFrame(ts).setVisible(true);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu không chính xác!");

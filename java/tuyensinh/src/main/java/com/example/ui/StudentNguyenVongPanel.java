@@ -11,6 +11,7 @@ import java.util.List;
 
 public class StudentNguyenVongPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private NguyenVongDAO dao;
     private ThiSinh ts;
@@ -61,7 +62,10 @@ public class StudentNguyenVongPanel extends JPanel {
         String[] cols = { "TT NV", "Mã Ngành", "Phương Thức", "Tổ Hợp", "Trạng Thái" };
         tableModel = new DefaultTableModel(cols, 0);
         table = new JTable(tableModel);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        UiTableTheme.apply(table);
+        tableScroll = new JScrollPane(table);
+        UiTableColumns.install(table, tableScroll);
+        add(tableScroll, BorderLayout.CENTER);
 
         setupEvents();
         loadData();
@@ -77,6 +81,7 @@ public class StudentNguyenVongPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private void setupEvents() {

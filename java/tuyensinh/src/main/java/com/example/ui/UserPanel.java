@@ -10,6 +10,7 @@ import java.util.List;
 
 public class UserPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private UserDAO userDAO;
 
@@ -18,7 +19,7 @@ public class UserPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // 1. Tạo thanh công cụ (Toolbar) chứa các nút
-        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 10));
 
         JButton btnAdd = new JButton("Thêm User");
         btnAdd.addActionListener(e -> {
@@ -102,6 +103,11 @@ public class UserPanel extends JPanel {
         topPanel.add(btnEdit);
         topPanel.add(btnResetPass);
         topPanel.add(btnRefresh);
+        UiButtons.stylePrimary(btnAdd);
+        UiButtons.stylePrimary(btnEdit);
+        UiButtons.stylePrimary(btnResetPass);
+        UiButtons.styleSecondary(btnRefresh);
+        UiButtons.equalizeButtonsInContainer(topPanel);
         add(topPanel, BorderLayout.NORTH);
 
         // 2. Tạo bảng hiển thị dữ liệu
@@ -113,9 +119,11 @@ public class UserPanel extends JPanel {
             }
         };
         table = new JTable(tableModel);
-        
-        JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+        UiTableTheme.apply(table);
+
+        tableScroll = new JScrollPane(table);
+        UiTableColumns.install(table, tableScroll);
+        add(tableScroll, BorderLayout.CENTER);
 
         // 3. Tải dữ liệu lên bảng
         loadDataToTable();
@@ -140,5 +148,6 @@ public class UserPanel extends JPanel {
                 tableModel.addRow(row);
             }
         }
+        UiTableColumns.refresh(table);
     }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 public class NganhPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private NganhDAO nganhDAO;
 
@@ -70,6 +71,12 @@ public class NganhPanel extends JPanel {
         buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear);
         buttonPanel.add(btnImport);
+        UiButtons.stylePrimary(btnAdd);
+        UiButtons.stylePrimary(btnUpdate);
+        UiButtons.styleSecondary(btnImport);
+        UiButtons.styleDanger(btnDelete);
+        UiButtons.styleSecondary(btnClear);
+        UiButtons.equalizeButtonsInContainer(buttonPanel);
 
         // --- BẢNG DỮ LIỆU ---
         String[] columns = {
@@ -85,11 +92,13 @@ public class NganhPanel extends JPanel {
             }
         };
         table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
+        UiTableTheme.apply(table);
+        tableScroll = new JScrollPane(table);
+        UiTableColumns.install(table, tableScroll);
 
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
+        centerPanel.add(tableScroll, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
 
         loadData();
@@ -109,6 +118,7 @@ public class NganhPanel extends JPanel {
                 if (selected != null) {
                     cbTohopGoc.setSelectedItem(selected);
                 }
+                UiTableColumns.refresh(table);
             }
         });
     }
@@ -148,6 +158,7 @@ public class NganhPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private void clearForm() {

@@ -4,6 +4,7 @@ import com.example.dao.ThiSinhDAO;
 import com.example.entity.ThiSinh;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class ThiSinhPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private ThiSinhDAO dao;
 
@@ -34,18 +36,26 @@ public class ThiSinhPanel extends JPanel {
         // --- PHẦN TOP: TÌM KIẾM & CHỨC NĂNG ---
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        searchPanel.add(new JLabel("Tìm CCCD hoặc Họ tên:"));
-        txtSearch = new JTextField(20);
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 14, 8));
+        txtSearch = new JTextField(22);
+        txtSearch.setFont(txtSearch.getFont().deriveFont(Font.PLAIN, 18f));
+        txtSearch.putClientProperty("JTextField.placeholderText", "Nhập CCCD hoặc họ tên...");
+        txtSearch.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(226, 232, 240), 1, true),
+                new EmptyBorder(11, 15, 11, 15)));
         btnSearch = new JButton("Tìm kiếm");
         searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
+        UiButtons.stylePrimary(btnSearch);
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnEdit = new JButton("Sửa thông tin");
         btnImport = new JButton("Import CSV");
         actionPanel.add(btnEdit);
         actionPanel.add(btnImport);
+        UiButtons.stylePrimary(btnEdit);
+        UiButtons.styleSecondary(btnImport);
+        UiButtons.equalizeButtonsInContainer(actionPanel);
 
         topPanel.add(searchPanel, BorderLayout.WEST);
         topPanel.add(actionPanel, BorderLayout.EAST);
@@ -61,7 +71,10 @@ public class ThiSinhPanel extends JPanel {
             }
         };
         table = new JTable(tableModel);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        UiTableTheme.apply(table);
+        tableScroll = new JScrollPane(table);
+        UiTableColumns.install(table, tableScroll);
+        add(tableScroll, BorderLayout.CENTER);
 
         // --- PHẦN BOTTOM: PHÂN TRANG ---
         JPanel paginationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -72,6 +85,9 @@ public class ThiSinhPanel extends JPanel {
         paginationPanel.add(btnPrev);
         paginationPanel.add(lblPageInfo);
         paginationPanel.add(btnNext);
+        UiButtons.styleSecondary(btnPrev);
+        UiButtons.styleSecondary(btnNext);
+        UiButtons.equalizeButtonSizes(btnPrev, btnNext);
         add(paginationPanel, BorderLayout.SOUTH);
 
         // --- SỰ KIỆN ---
@@ -104,6 +120,7 @@ public class ThiSinhPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private void setupEvents() {

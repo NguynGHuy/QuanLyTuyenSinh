@@ -6,6 +6,8 @@ import com.example.entity.BangQuyDoi;
 import com.example.entity.ToHopMon; // Import thêm Entity này
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -15,6 +17,7 @@ import java.util.List;
 
 public class BangQuyDoiPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private BangQuyDoiDAO dao;
     private ToHopDAO toHopDAO; // Khai báo thêm DAO
@@ -76,12 +79,16 @@ public class BangQuyDoiPanel extends JPanel {
         txtId.setVisible(false);
 
         // --- 2. THANH TÌM KIẾM ---
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        searchPanel.add(new JLabel("Tìm kiếm (Mã/PT/Tổ Hợp/Môn):"));
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 16, 14));
         txtSearch = new JTextField(25);
+        txtSearch.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        txtSearch.putClientProperty("JTextField.placeholderText", "Nhập Mã/PT/Tổ hợp/Môn...");
+        Border fieldLine = BorderFactory.createLineBorder(new Color(226, 232, 240), 1, true);
+        txtSearch.setBorder(BorderFactory.createCompoundBorder(fieldLine, new EmptyBorder(11, 15, 11, 15)));
         btnSearch = new JButton("Tìm kiếm");
         searchPanel.add(txtSearch);
         searchPanel.add(btnSearch);
+        UiButtons.stylePrimary(btnSearch);
 
         JPanel northPanel = new JPanel(new BorderLayout());
         northPanel.add(formPanel, BorderLayout.CENTER);
@@ -98,6 +105,12 @@ public class BangQuyDoiPanel extends JPanel {
 
         buttonPanel.add(btnAdd); buttonPanel.add(btnUpdate); buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear); buttonPanel.add(btnImport);
+        UiButtons.stylePrimary(btnAdd);
+        UiButtons.stylePrimary(btnUpdate);
+        UiButtons.styleSecondary(btnImport);
+        UiButtons.styleDanger(btnDelete);
+        UiButtons.styleSecondary(btnClear);
+        UiButtons.equalizeButtonsInContainer(buttonPanel);
 
         // --- 4. BẢNG DỮ LIỆU ---
         String[] columns = {"ID", "Mã QĐ", "PT", "Tổ Hợp", "Môn", "Điểm A", "Điểm B", "Điểm C", "Điểm D", "Phân vị"};
@@ -105,11 +118,13 @@ public class BangQuyDoiPanel extends JPanel {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
         table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
+        UiTableTheme.apply(table);
+        tableScroll = new JScrollPane(table);
+        UiTableColumns.install(table, tableScroll);
 
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
         centerPanel.add(buttonPanel, BorderLayout.NORTH);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
+        centerPanel.add(tableScroll, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
 
         loadToHopToCombo(); // Tải dữ liệu vào ComboBox
@@ -123,6 +138,7 @@ public class BangQuyDoiPanel extends JPanel {
                 Object selected = cbToHop.getSelectedItem();
                 loadToHopToCombo();
                 if (selected != null) cbToHop.setSelectedItem(selected);
+                UiTableColumns.refresh(table);
             }
         });
     }
@@ -155,6 +171,7 @@ public class BangQuyDoiPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private void clearForm() {

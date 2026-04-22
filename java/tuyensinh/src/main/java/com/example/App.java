@@ -1,6 +1,8 @@
 package com.example;
 
 import com.example.ui.LoginFrame;
+import com.formdev.flatlaf.FlatLightLaf;
+
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -9,9 +11,13 @@ public class App {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    FlatLightLaf.setup();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    try {
+                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
                 
                 // Mở cửa sổ đăng nhập

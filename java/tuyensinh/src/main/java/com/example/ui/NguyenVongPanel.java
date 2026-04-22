@@ -17,6 +17,7 @@ import java.util.List;
 
 public class NguyenVongPanel extends JPanel {
     private JTable table;
+    private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
     private NguyenVongDAO dao;
 
@@ -63,14 +64,18 @@ public class NguyenVongPanel extends JPanel {
         btnImport = new JButton("Import CSV");
         
         btnRunAlgo = new JButton("🚀 CHẠY XÉT TUYỂN");
-        // Thay vì set Background, ta chỉ cần set màu chữ nổi bật
-        btnRunAlgo.setForeground(new Color(220, 53, 69)); // Màu đỏ
-        btnRunAlgo.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         btnPanel.add(btnAdd); btnPanel.add(btnEdit); btnPanel.add(btnDelete);
-        btnPanel.add(btnRefresh); btnPanel.add(btnImport); 
+        btnPanel.add(btnRefresh); btnPanel.add(btnImport);
         btnPanel.add(new JLabel(" | "));
         btnPanel.add(btnRunAlgo);
+        UiButtons.stylePrimary(btnAdd);
+        UiButtons.stylePrimary(btnEdit);
+        UiButtons.styleSecondary(btnImport);
+        UiButtons.stylePrimary(btnRunAlgo);
+        UiButtons.styleDanger(btnDelete);
+        UiButtons.styleSecondary(btnRefresh);
+        UiButtons.equalizeHeightsOnly(btnAdd, btnEdit, btnDelete, btnRefresh, btnImport, btnRunAlgo);
 
         // --- 3. BẢNG DỮ LIỆU (VẪN GIỮ ĐỦ 12 CỘT ĐỂ XEM KẾT QUẢ) ---
         String[] cols = { "ID", "CCCD", "Mã Ngành", "Thứ tự", "Điểm THXT", "Điểm UTQD", "Cộng", "Tổng Điểm", "Kết quả", "Keys", "PT", "Tổ hợp" };
@@ -78,21 +83,15 @@ public class NguyenVongPanel extends JPanel {
             @Override public boolean isCellEditable(int row, int column) { return false; }
         };
         table = new JTable(tableModel);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
-        table.setRowHeight(25);
+        UiTableTheme.apply(table);
 
-        // Thiết lập độ rộng cột
-        table.getColumnModel().getColumn(1).setPreferredWidth(100); // CCCD
-        table.getColumnModel().getColumn(8).setPreferredWidth(120); // Kết quả
-        table.getColumnModel().getColumn(9).setPreferredWidth(150); // Keys
-
-        // Tô màu Trúng Tuyển / Rớt
+        // Tô màu Trúng Tuyển / Rớt (nền zebra/hover do UiTableTheme)
         table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                UiTableTheme.applyDataRowAppearance(table, c, row, isSelected);
                 if (!isSelected) {
-                    c.setBackground(row % 2 == 0 ? Color.WHITE : new Color(245, 245, 245));
                     if (column == 8 && value != null) {
                         if (value.toString().contains("TRÚNG TUYỂN")) {
                             c.setForeground(new Color(0, 150, 0)); c.setFont(c.getFont().deriveFont(Font.BOLD));
@@ -105,9 +104,12 @@ public class NguyenVongPanel extends JPanel {
             }
         });
 
+        tableScroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        UiTableColumns.install(table, tableScroll);
+
         JPanel centerContainer = new JPanel(new BorderLayout());
         centerContainer.add(btnPanel, BorderLayout.NORTH);
-        centerContainer.add(new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
+        centerContainer.add(tableScroll, BorderLayout.CENTER);
         add(centerContainer, BorderLayout.CENTER);
 
         setupEvents();
@@ -127,6 +129,7 @@ public class NguyenVongPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private void clearForm() {

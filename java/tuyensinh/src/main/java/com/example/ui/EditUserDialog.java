@@ -44,6 +44,9 @@ public class EditUserDialog extends JDialog {
         JButton btnCancel = new JButton("Hủy");
         panel.add(btnSave);
         panel.add(btnCancel);
+        UiButtons.stylePrimary(btnSave);
+        UiButtons.styleSecondary(btnCancel);
+        UiButtons.equalizeButtonSizes(btnSave, btnCancel);
 
         add(panel);
 

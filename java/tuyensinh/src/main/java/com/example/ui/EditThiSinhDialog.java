@@ -87,6 +87,9 @@ public class EditThiSinhDialog extends JDialog {
 
         buttonPanel.add(btnSave);
         buttonPanel.add(btnCancel);
+        UiButtons.stylePrimary(btnSave);
+        UiButtons.styleSecondary(btnCancel);
+        UiButtons.equalizeButtonsInContainer(buttonPanel);
         add(buttonPanel, BorderLayout.SOUTH);
 
         // --- 3. SỰ KIỆN ---

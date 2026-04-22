@@ -1,53 +1,74 @@
 package com.example.ui;
 
 import com.example.entity.ThiSinh;
+import com.example.ui.UiShellTheme.RoundedCardPanel;
+import com.example.ui.UiShellTheme.ShellGradientPanel;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserFrame extends JFrame {
-    // private ThiSinh currentTs;
 
     public UserFrame(ThiSinh ts) {
-        // this.currentTs = ts;
         setTitle("Cổng thông tin Thí sinh - SGU");
-        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(UiFrameDefaults.MAIN_SIZE);
         setLocationRelativeTo(null);
-        
-        // Thiết lập Layout chính cho Frame
-        setLayout(new BorderLayout());
+        setMinimumSize(UiFrameDefaults.MAIN_MIN);
 
-        JTabbedPane tabs = new JTabbedPane();
-        
-        // Tab 1: Tra cứu công khai (như cũ)
-        tabs.addTab("Xem Kết Quả Chung", new TraCuuPanel());
+        ShellGradientPanel root = new ShellGradientPanel();
+        root.setLayout(new BorderLayout());
+        setContentPane(root);
 
-        // Tab 2: Quản lý nguyện vọng cá nhân
-        tabs.addTab("Đăng Ký Nguyện Vọng", new StudentNguyenVongPanel(ts));
+        int gap = 20;
+        int outer = 28;
+        JPanel mainRow = new JPanel(new BorderLayout(gap, 0));
+        mainRow.setOpaque(false);
+        mainRow.setBorder(new EmptyBorder(outer, outer, outer, outer));
 
-        // Đặt Tabs vào giữa màn hình
-        add(tabs, BorderLayout.CENTER);
+        RoundedCardPanel sidebarCard = new RoundedCardPanel(new BorderLayout());
+        sidebarCard.setBorder(new EmptyBorder(18, 16, 18, 16));
+        sidebarCard.setPreferredSize(new Dimension(280, 0));
 
-        // --- PHẦN SOUTH: PANEL ĐĂNG XUẤT (Giống hệt AdminFrame) ---
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        bottomPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Căn lề cho đẹp
-        
-        JButton btnLogout = new JButton("Đăng xuất");
-        btnLogout.setForeground(Color.RED); // Chữ màu đỏ nổi bật
-        
-        bottomPanel.add(btnLogout);
-        add(bottomPanel, BorderLayout.SOUTH);
+        JPanel sideCanvas = new JPanel(new BorderLayout(0, 6));
+        sideCanvas.setOpaque(true);
+        sideCanvas.setBackground(SidebarUi.SIDEBAR_CANVAS);
+        CardLayout cardLayout = new CardLayout();
+        JPanel deck = new JPanel(cardLayout);
+        deck.add(new TraCuuPanel(), "tracuu");
+        deck.add(new StudentNguyenVongPanel(ts), "nv");
 
-        // --- SỰ KIỆN ĐĂNG XUẤT ---
+        List<String> labels = new ArrayList<>(List.of("Xem Kết Quả Chung", "Đăng Ký Nguyện Vọng"));
+        List<String> icons = new ArrayList<>(List.of("🔍", "📄"));
+        List<String> cardIds = new ArrayList<>(List.of("tracuu", "nv"));
+
+        JButton btnLogout = SidebarUi.createOutlineLogoutButton();
+        sideCanvas.add(
+                SidebarUi.buildCollapsibleNavBlock(sidebarCard, labels, icons,
+                        i -> cardLayout.show(deck, cardIds.get(i)), btnLogout),
+                BorderLayout.CENTER);
+
+        sidebarCard.add(sideCanvas, BorderLayout.CENTER);
+        sidebarCard.add(btnLogout, BorderLayout.SOUTH);
+
+        RoundedCardPanel contentCard = new RoundedCardPanel(new BorderLayout());
+        contentCard.setBorder(new EmptyBorder(22, 22, 22, 22));
+        contentCard.add(deck, BorderLayout.CENTER);
+
+        mainRow.add(sidebarCard, BorderLayout.WEST);
+        mainRow.add(contentCard, BorderLayout.CENTER);
+        root.add(mainRow, BorderLayout.CENTER);
+
         btnLogout.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(this, 
-                "Bạn có chắc chắn muốn đăng xuất?", 
-                "Xác nhận", 
-                JOptionPane.YES_NO_OPTION);
-                
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Bạn có chắc chắn muốn đăng xuất?",
+                    "Xác nhận",
+                    JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                this.dispose(); // Đóng cửa sổ hiện tại
-                // Mở lại form Login
+                this.dispose();
                 SwingUtilities.invokeLater(() -> new LoginFrame().setVisible(true));
             }
         });

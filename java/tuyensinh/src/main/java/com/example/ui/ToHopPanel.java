@@ -65,7 +65,13 @@ public class ToHopPanel extends JPanel {
         buttonPanel.add(btnDelete);
         buttonPanel.add(btnClear);
         buttonPanel.add(btnImport);
-        
+        UiButtons.stylePrimary(btnAdd);
+        UiButtons.stylePrimary(btnUpdate);
+        UiButtons.styleSecondary(btnImport);
+        UiButtons.styleDanger(btnDelete);
+        UiButtons.styleSecondary(btnClear);
+        UiButtons.equalizeButtonsInContainer(buttonPanel);
+
         // --- PHẦN 3: BẢNG DỮ LIỆU (Phía dưới) ---
         String[] columns = {"ID", "Mã Tổ Hợp", "Môn 1", "Môn 2", "Môn 3", "Tên Tổ Hợp"};
         tableModel = new DefaultTableModel(columns, 0) {
@@ -73,7 +79,9 @@ public class ToHopPanel extends JPanel {
             public boolean isCellEditable(int row, int column) { return false; }
         };
         table = new JTable(tableModel);
+        UiTableTheme.apply(table);
         JScrollPane scrollPane = new JScrollPane(table);
+        UiTableColumns.install(table, scrollPane);
 
         // Gom nút và bảng vào phần Center
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
@@ -96,6 +104,7 @@ public class ToHopPanel extends JPanel {
                 });
             }
         }
+        UiTableColumns.refresh(table);
     }
 
     private void clearForm() {
