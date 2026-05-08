@@ -1,4 +1,4 @@
-const API_BASE = "/api";
+const API_BASE = "http://localhost:8080/api";
 
 async function requestJson(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
@@ -57,4 +57,5 @@ export const api = {
       `/bang-quy-doi/phuong-thuc/${encodeURIComponent(phuongThuc)}/to-hop/${encodeURIComponent(toHop)}`
     );
   },
+  
 };
