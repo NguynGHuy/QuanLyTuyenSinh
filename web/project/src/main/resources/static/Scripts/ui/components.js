@@ -1,12 +1,12 @@
 import { loadTemplate, renderTemplate } from "./template.js";
 
 const componentPaths = {
-  nav: "./Components/nav.html",
-  alert: "./Components/alert.html",
-  empty: "./Components/empty-state.html",
-  loading: "./Components/loading.html",
-  result: "./Components/result-card.html",
-  modal: "./Components/modal.html",
+  nav: "/Components/nav.html",
+  alert: "/Components/alert.html",
+  empty: "/Components/empty-state.html",
+  loading: "/Components/loading.html",
+  result: "/Components/result-card.html",
+  modal: "/Components/modal.html",
 };
 
 export async function renderComponent(name, data = {}) {

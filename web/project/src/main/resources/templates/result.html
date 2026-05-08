@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tuyển sinh 2026 | Kết quả</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/Style/base.css}">
+  <link rel="stylesheet" th:href="@{/Style/theme.css}">
+  <link rel="stylesheet" th:href="@{/Style/components.css}">
+  <link rel="stylesheet" th:href="@{/Style/pages.css}">
+</head>
+<body class="app-body" data-theme="sky">
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header th:replace="fragments/nav :: nav"></header>
+  <main class="app-main">
+    <section class="page-section">
+      <div class="container">
+        <div class="page-header">
+          <div>
+            <span class="eyebrow">Kết quả xét tuyển</span>
+            <h1 class="h3 mb-2">Tra cứu kết quả</h1>
+            <p class="text-muted">Thông tin được đồng bộ từ hệ thống quản lý.</p>
+          </div>
+          <div class="header-actions">
+            <a class="btn btn-outline-primary btn-sm" th:href="@{/tinh-diem}">Tính điểm</a>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="card info-card">
+              <div class="card-body">
+                <div class="card-title">Thí sinh</div>
+                <h3 class="h5 mb-3" th:text="${candidate != null ? candidate.ho + ' ' + candidate.ten : '-'}">-</h3>
+                <ul class="info-list">
+                  <li><span>CCCD</span><strong th:text="${candidate != null ? candidate.cccd : '-'}">-</strong></li>
+                  <li><span>Số báo danh</span><strong th:text="${candidate != null ? candidate.sobaodanh : '-'}">-</strong></li>
+                  <li><span>Ngày sinh</span><strong th:text="${candidate != null ? candidate.ngaySinh : '-'}">-</strong></li>
+                  <li><span>Email</span><strong th:text="${candidate != null ? candidate.email : '-'}">-</strong></li>
+                  <li><span>Nơi sinh</span><strong th:text="${candidate != null ? candidate.noiSinh : '-'}">-</strong></li>
+                </ul>
+              </div>
+            </div>
+            <div class="card info-card mt-3">
+              <div class="card-body">
+                <div class="card-title">Ưu tiên</div>
+                <ul class="info-list">
+                  <li><span>Đối tượng</span><strong th:text="${candidate != null ? candidate.doiTuong : '-'}">-</strong></li>
+                  <li><span>Khu vực</span><strong th:text="${candidate != null ? candidate.khuVuc : '-'}">-</strong></li>
+                  <li><span>Điểm ưu tiên</span><strong th:text="${#numbers.formatDecimal(priorityPoints, 1, 2)}">-</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div th:if="${!#lists.isEmpty(preferences)}">
+              <div th:if="${admittedPref != null}" class="card result-card result-success">
+                <div class="card-body">
+                  <div class="result-status">Trúng tuyển</div>
+                  <h3 class="h5 mb-2" th:text="${admittedPref.majorName}">-</h3>
+                  <p class="text-muted mb-0">Chúc mừng bạn đã trúng tuyển theo nguyện vọng ưu tiên.</p>
+                  <div class="result-grid">
+                    <div>
+                      <div class="label">Nguyện vọng</div>
+                      <div class="value" th:text="${admittedPref.thuTuNV}">-</div>
+                    </div>
+                    <div>
+                      <div class="label">Tổ hợp</div>
+                      <div class="value" th:text="${admittedPref.toHopLabel}">-</div>
+                    </div>
+                    <div>
+                      <div class="label">Phương thức</div>
+                      <div class="value" th:text="${admittedPref.methodLabel}">-</div>
+                    </div>
+                    <div>
+                      <div class="label">Điểm xét tuyển</div>
+                      <div class="value" th:text="${admittedPref.diemXetTuyen != null ? #numbers.formatDecimal(admittedPref.diemXetTuyen, 1, 2) : '-'}">-</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div th:if="${admittedPref == null}" class="card result-card result-warning">
+                <div class="card-body">
+                  <div class="result-status">Chưa trúng tuyển</div>
+                  <h3 class="h5 mb-2">Rất tiếc, bạn chưa đạt nguyện vọng.</h3>
+                  <p class="text-muted mb-0">Vui lòng xem chi tiết từng nguyện vọng để biết lý do.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card mt-3">
+              <div class="card-body">
+                <div class="card-title">Danh sách nguyện vọng</div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle result-table">
+                    <thead>
+                      <tr>
+                        <th>NV</th>
+                        <th>Ngành</th>
+                        <th>Tổ hợp</th>
+                        <th>Phương thức</th>
+                        <th>Điểm</th>
+                        <th>Kết quả</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="pref : ${preferences}" th:classappend="${pref.admitted} ? 'table-success' : ''">
+                        <td th:text="${pref.thuTuNV}">-</td>
+                        <td th:text="${pref.majorName}">-</td>
+                        <td th:text="${pref.toHopLabel}">-</td>
+                        <td th:text="${pref.methodLabel}">-</td>
+                        <td th:text="${pref.diemXetTuyen != null ? #numbers.formatDecimal(pref.diemXetTuyen, 1, 2) : '-'}">-</td>
+                        <td>
+                          <span class="badge" th:classappend="${pref.admitted} ? ' bg-success' : ' bg-secondary'" th:text="${pref.ketQua}">-</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3" th:if="${#lists.isEmpty(preferences)}">
+              <div class="empty-state">
+                <div class="empty-icon">📄</div>
+                <div class="fw-semibold">Chưa có dữ liệu nguyện vọng</div>
+                <div class="text-muted">Vui lòng kiểm tra lại thông tin hoặc liên hệ phòng đào tạo.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

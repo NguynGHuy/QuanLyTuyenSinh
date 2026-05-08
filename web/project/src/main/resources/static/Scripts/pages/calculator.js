@@ -334,3 +334,9 @@ function renderThptTable(results) {
     })
     .join("");
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initCalculatorPage().catch((error) => {
+    console.error("Failed to initialize calculator", error);
+  });
+});
