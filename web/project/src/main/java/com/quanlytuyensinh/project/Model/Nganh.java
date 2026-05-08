@@ -80,67 +80,67 @@ public class Nganh {
         this.tennganh = tennganh;
     }
 
-    public String getnTohopgoc() {
+    public String getNTohopgoc() {
         return nTohopgoc;
     }
 
-    public void setnTohopgoc(String nTohopgoc) {
+    public void setNTohopgoc(String nTohopgoc) {
         this.nTohopgoc = nTohopgoc;
     }
 
-    public Integer getnChitieu() {
+    public Integer getNChitieu() {
         return nChitieu;
     }
 
-    public void setnChitieu(Integer nChitieu) {
+    public void setNChitieu(Integer nChitieu) {
         this.nChitieu = nChitieu;
     }
 
-    public Double getnDiemsan() {
+    public Double getNDiemsan() {
         return nDiemsan;
     }
 
-    public void setnDiemsan(Double nDiemsan) {
+    public void setNDiemsan(Double nDiemsan) {
         this.nDiemsan = nDiemsan;
     }
 
-    public Double getnDiemtrungtuyen() {
+    public Double getNDiemtrungtuyen() {
         return nDiemtrungtuyen;
     }
 
-    public void setnDiemtrungtuyen(Double nDiemtrungtuyen) {
+    public void setNDiemtrungtuyen(Double nDiemtrungtuyen) {
         this.nDiemtrungtuyen = nDiemtrungtuyen;
     }
 
-    public String getnTuyenthang() {
+    public String getNTuyenthang() {
         return nTuyenthang;
     }
 
-    public void setnTuyenthang(String nTuyenthang) {
+    public void setNTuyenthang(String nTuyenthang) {
         this.nTuyenthang = nTuyenthang;
     }
 
-    public String getnDgnl() {
+    public String getNDgnl() {
         return nDgnl;
     }
 
-    public void setnDgnl(String nDgnl) {
+    public void setNDgnl(String nDgnl) {
         this.nDgnl = nDgnl;
     }
 
-    public String getnThpt() {
+    public String getNThpt() {
         return nThpt;
     }
 
-    public void setnThpt(String nThpt) {
+    public void setNThpt(String nThpt) {
         this.nThpt = nThpt;
     }
 
-    public String getnVsat() {
+    public String getNVsat() {
         return nVsat;
     }
 
-    public void setnVsat(String nVsat) {
+    public void setNVsat(String nVsat) {
         this.nVsat = nVsat;
     }
 

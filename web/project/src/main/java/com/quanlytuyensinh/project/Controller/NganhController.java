@@ -32,6 +32,7 @@ public class NganhController {
         return ResponseEntity.ok(nganh);
     }
 
+
     @GetMapping("/ten/{tennganh}")
     public List<Nganh> getNganhsByTennganh(@PathVariable String tennganh) {
         return nganhService.getNganhsByTennganh(tennganh);
