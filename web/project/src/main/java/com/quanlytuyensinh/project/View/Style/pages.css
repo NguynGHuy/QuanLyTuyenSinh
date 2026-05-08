@@ -4,6 +4,15 @@
   z-index: 1;
 }
 
+.auth-section {
+  padding: 64px 0;
+  background: linear-gradient(180deg, rgba(74,123,214,0.06) 0%, rgba(241,246,255,0.75) 40%, rgba(255,255,255,0) 100%);
+}
+
+body[data-theme="dark"] .auth-section {
+  background: linear-gradient(180deg, rgba(127,182,255,0.1) 0%, rgba(11,26,50,0.85) 45%, rgba(11,26,50,0) 100%);
+}
+
 .auth-intro .lead {
   max-width: 520px;
 }
@@ -22,6 +31,35 @@
   box-shadow: var(--shadow-card);
 }
 
+.auth-card {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.auth-card .card-body {
+  padding: 28px 30px;
+}
+
+.auth-card h2 {
+  font-family: var(--font-heading);
+  color: var(--ink-900);
+  margin-bottom: 6px;
+}
+
+.note-card {
+  background: linear-gradient(90deg, rgba(74,123,214,0.04), rgba(241,246,255,0.6));
+  border: 1px solid rgba(74,123,214,0.08);
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--ink-700);
+}
+
+body[data-theme="dark"] .note-card {
+  background: linear-gradient(90deg, rgba(110,168,255,0.08), rgba(13,26,44,0.9));
+  border-color: rgba(110,168,255,0.18);
+  color: var(--ink-700);
+}
+
 .feature-title {
   font-weight: 700;
   margin-bottom: 6px;
@@ -30,6 +68,20 @@
 .feature-text {
   color: var(--ink-500);
   margin: 0;
+}
+
+/* Improve form visuals */
+.form-field label {
+  font-weight: 600;
+  color: var(--ink-700);
+}
+
+.form-control {
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.form-control:focus {
+  transform: translateY(-1px);
 }
 
 /* Page header */

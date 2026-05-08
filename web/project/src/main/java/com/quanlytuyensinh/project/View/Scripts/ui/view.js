@@ -26,6 +26,18 @@ async function renderNav() {
       navigate("#/dang-nhap");
     });
   }
+
+  const themeBtn = document.getElementById("btnThemeToggle");
+  if (themeBtn) {
+    const current = store.getState().theme || "sky";
+    themeBtn.textContent = current === "dark" ? "☀️" : "🌙";
+    themeBtn.addEventListener("click", () => {
+      const next = store.getState().theme === "dark" ? "sky" : "dark";
+      store.setState({ theme: next });
+      document.body.dataset.theme = next;
+      themeBtn.textContent = next === "dark" ? "☀️" : "🌙";
+    });
+  }
 }
 
 export async function renderView(route) {

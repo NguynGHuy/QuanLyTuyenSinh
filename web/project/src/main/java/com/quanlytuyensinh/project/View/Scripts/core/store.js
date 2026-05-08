@@ -1,7 +1,7 @@
 const state = {
   session: null,
   route: null,
-  theme: "sky",
+  theme: (typeof localStorage !== "undefined" && localStorage.getItem("theme")) || "sky",
 };
 
 const listeners = new Set();
@@ -15,6 +15,13 @@ function getState() {
 
 function setState(partial) {
   Object.assign(state, partial);
+  if (partial && Object.prototype.hasOwnProperty.call(partial, "theme")) {
+    try {
+      localStorage.setItem("theme", state.theme);
+    } catch (e) {
+      // ignore
+    }
+  }
   const snapshot = getState();
   listeners.forEach((listener) => listener(snapshot));
 }

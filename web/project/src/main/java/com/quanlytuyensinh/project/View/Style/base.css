@@ -11,6 +11,7 @@ body.app-body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  transition: background 320ms ease, color 320ms ease;
 }
 
 h1, h2, h3, h4, h5 {
@@ -41,6 +42,7 @@ a:hover {
   filter: blur(0px);
   opacity: 0.4;
   z-index: 0;
+  transition: background 320ms ease, opacity 320ms ease;
 }
 
 .bg-orb.orb-1 {
@@ -63,6 +65,7 @@ a:hover {
   background-size: 48px 48px;
   z-index: 0;
   pointer-events: none;
+  transition: background-image 320ms ease;
 }
 
 .view-enter {
@@ -98,4 +101,22 @@ a:hover {
   height: 1px;
   background: var(--border-soft);
   margin: 16px 0;
+}
+
+/* Dark mode readability */
+body[data-theme="dark"] .text-muted {
+  color: var(--ink-500) !important;
+}
+
+body[data-theme="dark"] .bg-orb.orb-1 {
+  background: radial-gradient(circle at 30% 30%, rgba(110, 168, 255, 0.16), transparent 70%);
+}
+
+body[data-theme="dark"] .bg-orb.orb-2 {
+  background: radial-gradient(circle at 70% 70%, rgba(110, 168, 255, 0.12), transparent 70%);
+}
+
+body[data-theme="dark"] .bg-grid {
+  background-image: linear-gradient(rgba(110, 168, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(110, 168, 255, 0.06) 1px, transparent 1px);
 }

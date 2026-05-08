@@ -53,3 +53,22 @@ body[data-theme="sea"] {
   --primary-strong: #2f5aa6;
   --primary-soft: #dbeafe;
 }
+
+/* Dark theme variables */
+body[data-theme="dark"] {
+  --bg: #0b1a32;
+  --surface: #12243c;
+  --surface-soft: #0f2036;
+  --border-soft: rgba(255, 255, 255, 0.08);
+
+  --ink-900: #f1f5fb;
+  --ink-700: #d6e3f6;
+  --ink-500: #a9c0e0;
+
+  --primary: #7fb6ff;
+  --primary-strong: #5b92e8;
+  --primary-soft: rgba(127,182,255,0.08);
+
+  --bg: linear-gradient(180deg, #0b1a34 0%, #0b1a2f 100%);
+  --shadow-card: 0 10px 28px rgba(4, 8, 20, 0.45);
+}
