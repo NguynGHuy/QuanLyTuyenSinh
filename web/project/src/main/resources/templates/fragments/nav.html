@@ -16,6 +16,12 @@
           <li class="nav-item"><a class="nav-link" th:href="@{/tinh-diem}">Tính điểm</a></li>
         </ul>
         <div class="nav-meta d-flex align-items-center gap-3">
+          <button id="btnThemeToggle" class="btn btn-outline-light btn-sm theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode">
+            <span class="theme-toggle-track" aria-hidden="true">
+              <span class="theme-toggle-thumb"></span>
+            </span>
+            <span class="theme-toggle-label">Light</span>
+          </button>
           <span class="nav-user" th:text="${candidate != null ? candidate.ho + ' ' + candidate.ten + ' - ' + candidate.cccd : 'Thí sinh'}">-</span>
           <a class="btn btn-outline-light btn-sm" th:href="@{/logout}">Đăng xuất</a>
         </div>

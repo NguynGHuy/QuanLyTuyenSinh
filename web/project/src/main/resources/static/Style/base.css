@@ -42,7 +42,7 @@ a:hover {
   filter: blur(0px);
   opacity: 0.4;
   z-index: 0;
-  transition: background 320ms ease, opacity 320ms ease;
+  transition: background 320ms ease, opacity 320ms ease, transform 320ms ease;
 }
 
 .bg-orb.orb-1 {
@@ -65,7 +65,16 @@ a:hover {
   background-size: 48px 48px;
   z-index: 0;
   pointer-events: none;
-  transition: background-image 320ms ease;
+  transition: background-image 320ms ease, opacity 320ms ease;
+}
+
+body.theme-animate .bg-orb {
+  transform: scale(1.03);
+  opacity: 0.55;
+}
+
+body.theme-animate .bg-grid {
+  opacity: 0.85;
 }
 
 .view-enter {
@@ -104,19 +113,19 @@ a:hover {
 }
 
 /* Dark mode readability */
-body[data-theme="dark"] .text-muted {
+:root[data-theme="dark"] .text-muted {
   color: var(--ink-500) !important;
 }
 
-body[data-theme="dark"] .bg-orb.orb-1 {
+:root[data-theme="dark"] .bg-orb.orb-1 {
   background: radial-gradient(circle at 30% 30%, rgba(110, 168, 255, 0.16), transparent 70%);
 }
 
-body[data-theme="dark"] .bg-orb.orb-2 {
+:root[data-theme="dark"] .bg-orb.orb-2 {
   background: radial-gradient(circle at 70% 70%, rgba(110, 168, 255, 0.12), transparent 70%);
 }
 
-body[data-theme="dark"] .bg-grid {
+:root[data-theme="dark"] .bg-grid {
   background-image: linear-gradient(rgba(110, 168, 255, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(110, 168, 255, 0.06) 1px, transparent 1px);
 }

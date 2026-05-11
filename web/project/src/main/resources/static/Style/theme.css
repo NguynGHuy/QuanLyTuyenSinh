@@ -40,13 +40,13 @@
   --transition-medium: 320ms ease;
 }
 
-body[data-theme="sky"] {
+:root[data-theme="sky"] {
   --bg: #f7fbff;
   --surface: #ffffff;
   --primary: #4a7bd6;
 }
 
-body[data-theme="sea"] {
+:root[data-theme="sea"] {
   --bg: #f1f8ff;
   --surface: #fefeff;
   --primary: #3b6fc0;
@@ -55,7 +55,7 @@ body[data-theme="sea"] {
 }
 
 /* Dark theme variables */
-body[data-theme="dark"] {
+:root[data-theme="dark"] {
   --bg: #0b1a32;
   --surface: #12243c;
   --surface-soft: #0f2036;

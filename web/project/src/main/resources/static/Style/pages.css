@@ -9,7 +9,7 @@
   background: linear-gradient(180deg, rgba(74,123,214,0.06) 0%, rgba(241,246,255,0.75) 40%, rgba(255,255,255,0) 100%);
 }
 
-body[data-theme="dark"] .auth-section {
+:root[data-theme="dark"] .auth-section {
   background: linear-gradient(180deg, rgba(127,182,255,0.1) 0%, rgba(11,26,50,0.85) 45%, rgba(11,26,50,0) 100%);
 }
 
@@ -54,7 +54,7 @@ body[data-theme="dark"] .auth-section {
   color: var(--ink-700);
 }
 
-body[data-theme="dark"] .note-card {
+:root[data-theme="dark"] .note-card {
   background: linear-gradient(90deg, rgba(110,168,255,0.08), rgba(13,26,44,0.9));
   border-color: rgba(110,168,255,0.18);
   color: var(--ink-700);
