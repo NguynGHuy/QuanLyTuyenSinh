@@ -84,4 +84,16 @@ public class ThiSinhDAO {
             return null;
         }
     }
+
+    // Thống kê số lượng thí sinh theo khu vực hoặc đối tượng
+    public List<Object[]> getThongKe(String columnName) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // columnName sẽ truyền vào là "khuVuc" hoặc "doiTuong"
+            String hql = "SELECT t." + columnName + ", COUNT(t) FROM ThiSinh t GROUP BY t." + columnName;
+            return session.createQuery(hql, Object[].class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

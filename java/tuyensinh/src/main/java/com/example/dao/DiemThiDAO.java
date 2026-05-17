@@ -69,4 +69,16 @@ public class DiemThiDAO {
             return false; 
         }
     }
+
+    // Lấy danh sách điểm thi của thí sinh theo CCCD
+    public List<DiemThi> getDiemByCccd(String cccd) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM DiemThi WHERE cccd = :cccd";
+            return session.createQuery(hql, DiemThi.class)
+                          .setParameter("cccd", cccd).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

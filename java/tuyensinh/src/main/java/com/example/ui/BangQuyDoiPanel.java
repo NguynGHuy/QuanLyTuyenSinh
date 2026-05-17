@@ -37,7 +37,7 @@ public class BangQuyDoiPanel extends JPanel {
 
         // --- 1. FORM NHẬP LIỆU ---
         JPanel formPanel = new JPanel(new GridLayout(5, 4, 10, 10));
-        formPanel.setBorder(BorderFactory.createTitledBorder("Cấu hình Bảng Quy Đổi"));
+        formPanel.setBorder(new EmptyBorder(12, 12, 12, 12));
 
         formPanel.add(new JLabel("Mã quy đổi (*):"));
         txtMaQuyDoi = new JTextField();
@@ -80,7 +80,7 @@ public class BangQuyDoiPanel extends JPanel {
 
         // --- 2. THANH TÌM KIẾM ---
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 16, 14));
-        txtSearch = new JTextField(25);
+        txtSearch = new JTextField(20);
         txtSearch.setFont(new Font("SansSerif", Font.PLAIN, 18));
         txtSearch.putClientProperty("JTextField.placeholderText", "Nhập Mã/PT/Tổ hợp/Môn...");
         Border fieldLine = BorderFactory.createLineBorder(new Color(226, 232, 240), 1, true);
@@ -90,8 +90,14 @@ public class BangQuyDoiPanel extends JPanel {
         searchPanel.add(btnSearch);
         UiButtons.stylePrimary(btnSearch);
 
+        JScrollPane formScroll = new JScrollPane(formPanel);
+        formScroll.setBorder(BorderFactory.createTitledBorder("Cấu hình Bảng Quy Đổi"));
+        formScroll.setViewportBorder(null);
+        formScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        formScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
         JPanel northPanel = new JPanel(new BorderLayout());
-        northPanel.add(formPanel, BorderLayout.CENTER);
+        northPanel.add(formScroll, BorderLayout.CENTER);
         northPanel.add(searchPanel, BorderLayout.SOUTH);
         add(northPanel, BorderLayout.NORTH);
 

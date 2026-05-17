@@ -5,7 +5,6 @@ import com.example.entity.DiemThi;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -34,8 +33,7 @@ public class DiemThiPanel extends JPanel {
 
         // --- 1. FORM NHẬP LIỆU
         JPanel formPanel = new JPanel(new GridLayout(7, 6, 8, 8));
-        formPanel.setBorder(BorderFactory.createCompoundBorder(
-                new TitledBorder(" Bảng Điểm Thí Sinh "), new EmptyBorder(5, 5, 5, 5)));
+        formPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         // Khởi tạo và add các trường theo từng cặp (Label + TextField)
         txtCccd = new JTextField();
@@ -116,7 +114,10 @@ public class DiemThiPanel extends JPanel {
         formPanel.add(new JLabel(""));
         formPanel.add(new JLabel(""));
 
-        add(new JScrollPane(formPanel), BorderLayout.NORTH);
+        JScrollPane formScroll = new JScrollPane(formPanel);
+        formScroll.setBorder(BorderFactory.createTitledBorder("Bảng Điểm Thí Sinh"));
+        formScroll.setViewportBorder(null);
+        add(formScroll, BorderLayout.NORTH);
 
         // --- 2. THANH CÔNG CỤ ---
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));

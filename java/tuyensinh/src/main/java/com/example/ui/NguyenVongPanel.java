@@ -6,7 +6,6 @@ import com.example.service.XetTuyenService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -32,9 +31,9 @@ public class NguyenVongPanel extends JPanel {
         setLayout(new BorderLayout(10, 10));
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. FORM NHẬP LIỆU THU GỌN (GridLayout 2 hàng x 6 cột) ---
+        // --- 1. FORM NHẬP LIỆU (cùng cấu trúc viền/padding như NganhPanel) ---
         JPanel formPanel = new JPanel(new GridLayout(2, 6, 10, 10));
-        formPanel.setBorder(new TitledBorder(" Nhập thông tin Nguyện Vọng cơ bản "));
+        formPanel.setBorder(new EmptyBorder(12, 12, 12, 12));
 
         txtIdnv = new JTextField(); txtIdnv.setEditable(false);
         txtNnCccd = new JTextField(); 
@@ -53,7 +52,12 @@ public class NguyenVongPanel extends JPanel {
         formPanel.add(new JLabel("Phương thức (*):")); formPanel.add(txtTtPhuongthuc);
         formPanel.add(new JLabel("Tổ hợp:")); formPanel.add(txtTtThm);
 
-        add(formPanel, BorderLayout.NORTH);
+        JScrollPane formScroll = new JScrollPane(formPanel);
+        formScroll.setBorder(BorderFactory.createTitledBorder("Nhập thông tin Nguyện Vọng cơ bản"));
+        formScroll.setViewportBorder(null);
+        formScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        formScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        add(formScroll, BorderLayout.NORTH);
 
         // --- 2. THANH CÔNG CỤ ---
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
