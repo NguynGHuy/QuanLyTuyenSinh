@@ -21,6 +21,11 @@ body.auth-page .auth-section {
   padding: 0px;
 }
 
+body.auth-page .auth-intro,
+body.auth-page .auth-card {
+  margin-top: 80px;
+}
+
 body.auth-success-page .app-main {
   min-height: 100vh;
   display: flex;

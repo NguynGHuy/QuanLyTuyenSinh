@@ -29,7 +29,7 @@
   <div class="bg-orb orb-1" aria-hidden="true"></div>
   <div class="bg-orb orb-2" aria-hidden="true"></div>
   <div class="bg-grid" aria-hidden="true"></div>
-  <header th:replace="fragments/nav :: nav(true)"></header>
+  <header th:replace="fragments/nav :: nav(false)"></header>
   <main class="app-main">
     <section class="page-section">
       <div class="container">
@@ -86,15 +86,19 @@
                         <th>Tổ hợp</th>
                         <th>Phương thức</th>
                         <th>Điểm xét tuyển</th>
+                        <th>Kết quả</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr th:each="pref : ${searchPreferences}">
+                      <tr th:each="pref : ${searchPreferences}" th:classappend="${pref.admitted} ? 'table-success' : ''">
                         <td th:text="${pref.thuTuNV}">-</td>
                         <td th:text="${pref.majorName}">-</td>
                         <td th:text="${pref.toHopLabel}">-</td>
                         <td th:text="${pref.methodLabel}">-</td>
                         <td th:text="${pref.diemXetTuyen != null ? #numbers.formatDecimal(pref.diemXetTuyen, 1, 2) : '-'}">-</td>
+                        <td>
+                          <span class="badge" th:classappend="${pref.admitted} ? ' bg-success' : ' bg-secondary'" th:text="${pref.ketQua}">-</span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
