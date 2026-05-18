@@ -2,6 +2,7 @@ package com.example.ui;
 
 import com.example.dao.ThiSinhDAO;
 import com.example.entity.ThiSinh;
+//import com.oracle.graal.vector.nodes.consumer.ac;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -19,7 +20,7 @@ public class ThiSinhPanel extends JPanel {
     private ThiSinhDAO dao;
 
     private JTextField txtSearch;
-    private JButton btnSearch, btnImport, btnEdit;
+    private JButton btnSearch, btnImport, btnEdit, btnThongKe, btnDetail;
     private JButton btnPrev, btnNext;
     private JLabel lblPageInfo;
 
@@ -37,7 +38,7 @@ public class ThiSinhPanel extends JPanel {
         JPanel topPanel = new JPanel(new BorderLayout());
 
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 14, 8));
-        txtSearch = new JTextField(22);
+        txtSearch = new JTextField(18);
         txtSearch.setFont(txtSearch.getFont().deriveFont(Font.PLAIN, 18f));
         txtSearch.putClientProperty("JTextField.placeholderText", "Nhập CCCD hoặc họ tên...");
         txtSearch.setBorder(BorderFactory.createCompoundBorder(
@@ -49,10 +50,18 @@ public class ThiSinhPanel extends JPanel {
         UiButtons.stylePrimary(btnSearch);
 
         JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        btnEdit = new JButton("Sửa thông tin");
+
+        btnThongKe = new JButton("Thống kê");
+        btnDetail = new JButton("Xem chi tiết");
+
+        btnEdit = new JButton("Sửa");
         btnImport = new JButton("Import CSV");
+
         actionPanel.add(btnEdit);
         actionPanel.add(btnImport);
+        actionPanel.add(btnThongKe);
+        actionPanel.add(btnDetail);
+
         UiButtons.stylePrimary(btnEdit);
         UiButtons.styleSecondary(btnImport);
         UiButtons.equalizeButtonsInContainer(actionPanel);
@@ -165,6 +174,54 @@ public class ThiSinhPanel extends JPanel {
                 }
             }
         });
+        
+        btnDetail.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn 1 thí sinh trên bảng để xem chi tiết!");
+                return;
+            }
+            int id = (int) table.getValueAt(row, 0);
+            ThiSinh ts = dao.getThiSinhById(id);
+            if (ts != null) {
+                JFrame parent = (JFrame) SwingUtilities.getWindowAncestor(this);
+                new ThiSinhDetailDialog(parent, ts).setVisible(true);
+            }
+        });
+
+        btnThongKe.addActionListener(e -> {
+            long total = dao.getTotalThiSinhs(""); // Lấy tổng thí sinh
+            List<Object[]> statKhuVuc = dao.getThongKe("khuVuc");
+            List<Object[]> statDoiTuong = dao.getThongKe("doiTuong");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("=== THỐNG KÊ HỒ SƠ THÍ SINH ===\n\n");
+            sb.append("Tổng số thí sinh trong hệ thống: ").append(total).append("\n\n");
+            
+            sb.append("--- Phân bố theo KHU VỰC ---\n");
+            if (statKhuVuc != null) {
+                for (Object[] row : statKhuVuc) {
+                    sb.append("- Khu vực ").append(row[0] != null ? row[0] : "Trống").append(": ").append(row[1]).append(" thí sinh\n");
+                }
+            }
+
+            sb.append("\n--- Phân bố theo ĐỐI TƯỢNG ƯU TIÊN ---\n");
+            if (statDoiTuong != null) {
+                for (Object[] row : statDoiTuong) {
+                    sb.append("- Đối tượng ").append(row[0] != null ? row[0] : "Trống").append(": ").append(row[1]).append(" thí sinh\n");
+                }
+            }
+
+            // Hiển thị ra hộp thoại
+            JTextArea textArea = new JTextArea(sb.toString());
+            textArea.setEditable(false);
+            textArea.setFont(new Font("Monospaced", Font.BOLD, 14));
+            textArea.setBackground(new Color(245, 245, 245));
+            textArea.setMargin(new Insets(10, 10, 10, 10));
+            
+            JOptionPane.showMessageDialog(this, new JScrollPane(textArea), "Bảng Thống Kê", JOptionPane.INFORMATION_MESSAGE);
+        });
+
     }
 
     private String getSafeString(String[] data, int index) {

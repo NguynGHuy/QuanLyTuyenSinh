@@ -4,6 +4,7 @@ import com.example.dao.ToHopDAO;
 import com.example.entity.ToHopMon;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ToHopPanel extends JPanel {
 
         // --- PHẦN 1: FORM NHẬP LIỆU (Phía trên) ---
         JPanel formPanel = new JPanel(new GridLayout(3, 4, 10, 10));
-        formPanel.setBorder(BorderFactory.createTitledBorder("Thông tin Tổ hợp môn"));
+        formPanel.setBorder(new EmptyBorder(12, 12, 12, 12));
 
         formPanel.add(new JLabel("Mã tổ hợp (VD: A00):"));
         txtMaToHop = new JTextField();
@@ -50,7 +51,12 @@ public class ToHopPanel extends JPanel {
         txtId = new JTextField();
         txtId.setVisible(false); 
 
-        add(formPanel, BorderLayout.NORTH);
+        JScrollPane formScroll = new JScrollPane(formPanel);
+        formScroll.setBorder(BorderFactory.createTitledBorder("Thông tin Tổ hợp môn"));
+        formScroll.setViewportBorder(null);
+        formScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        formScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        add(formScroll, BorderLayout.NORTH);
 
         // --- PHẦN 2: THANH CÔNG CỤ (Ở giữa) ---
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));

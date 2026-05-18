@@ -38,7 +38,8 @@ public class NganhDAO {
             transaction.commit();
             return true;
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null)
+                transaction.rollback();
             e.printStackTrace();
             return false;
         }
@@ -52,7 +53,8 @@ public class NganhDAO {
             transaction.commit();
             return true;
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null)
+                transaction.rollback();
             e.printStackTrace();
             return false;
         }
@@ -70,9 +72,24 @@ public class NganhDAO {
             }
             return false;
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
+            if (transaction != null)
+                transaction.rollback();
             e.printStackTrace();
             return false;
+        }
+    }
+
+    // Lấy danh sách ngành kèm số lượng thí sinh đăng ký nguyện vọng
+    public List<Object[]> getNganhWithRegistryCount() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Query bốc dữ liệu từ bảng Ngành và đếm số lượng bản ghi tương ứng bên bảng
+            // Nguyện vọng
+            String hql = "SELECT n, (SELECT COUNT(nv) FROM NguyenVong nv WHERE nv.maNganh = n.manganh) " +
+                    "FROM Nganh n";
+            return session.createQuery(hql, Object[].class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

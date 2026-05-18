@@ -75,4 +75,17 @@ public class DiemCongDAO {
             return false;
         }
     }
+
+    public List<DiemCong> searchByCccd(String cccd) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Tìm gần đúng (LIKE) theo CCCD
+            String hql = "FROM DiemCong WHERE tsCccd LIKE :kw";
+            return session.createQuery(hql, DiemCong.class)
+                          .setParameter("kw", "%" + cccd.trim() + "%")
+                          .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
