@@ -34,6 +34,10 @@ a:hover {
   z-index: 2;
 }
 
+.app-main--auth {
+  padding-top: 0;
+}
+
 .bg-orb {
   position: fixed;
   width: 420px;

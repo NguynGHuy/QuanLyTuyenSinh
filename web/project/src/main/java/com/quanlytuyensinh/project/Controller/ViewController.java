@@ -174,11 +174,7 @@ public class ViewController {
     }
 
     @GetMapping("/tinh-diem")
-    public String calculator(HttpSession session) {
-        ThiSinh candidate = (ThiSinh) session.getAttribute("candidate");
-        if (candidate == null) {
-            return "redirect:/";
-        }
+    public String calculator() {
         return "calculator";
     }
 

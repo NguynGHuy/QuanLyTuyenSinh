@@ -25,11 +25,12 @@
   <link rel="stylesheet" th:href="@{/Style/components.css}">
   <link rel="stylesheet" th:href="@{/Style/pages.css}">
 </head>
-<body class="app-body" data-theme="sky">
+<body class="app-body auth-page" data-theme="sky">
   <div class="bg-orb orb-1" aria-hidden="true"></div>
   <div class="bg-orb orb-2" aria-hidden="true"></div>
   <div class="bg-grid" aria-hidden="true"></div>
-  <main class="app-main">
+  <header th:replace="fragments/nav :: nav"></header>
+  <main class="app-main app-main--auth">
     <section class="auth-section">
       <div class="container py-5">
         <div class="row align-items-center min-vh-100 gy-4">

@@ -22,8 +22,10 @@
             </span>
             <span class="theme-toggle-label">Light</span>
           </button>
-          <span class="nav-user" th:text="${candidate != null ? candidate.ho + ' ' + candidate.ten + ' - ' + candidate.cccd : 'Thí sinh'}">-</span>
-          <a class="btn btn-outline-light btn-sm" th:href="@{/logout}">Đăng xuất</a>
+            <span class="nav-user" th:if="${candidate != null}" th:text="${candidate.ho + ' ' + candidate.ten + ' - ' + candidate.cccd}">-</span>
+            <span class="nav-user" th:if="${candidate == null}">Khách</span>
+            <a class="btn btn-outline-light btn-sm" th:if="${candidate == null}" th:href="@{/}">Đăng nhập</a>
+            <a class="btn btn-outline-light btn-sm" th:if="${candidate != null}" th:href="@{/logout}">Đăng xuất</a>
         </div>
       </div>
     </div>

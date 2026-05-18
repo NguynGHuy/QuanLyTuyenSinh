@@ -1,0 +1,42 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run web project (Spring Boot)",
+			"type": "shell",
+			"command": ".\\web\\project\\mvnw.cmd",
+			"args": [
+				"spring-boot:run"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run web project (Spring Boot) with pom",
+			"type": "shell",
+			"command": ".\\web\\project\\mvnw.cmd",
+			"args": [
+				"-f",
+				".\\web\\project\\pom.xml",
+				"spring-boot:run"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Run web project (Spring Boot) with pom",
+			"type": "shell",
+			"command": ".\\web\\project\\mvnw.cmd",
+			"args": [
+				"-f",
+				".\\web\\project\\pom.xml",
+				"spring-boot:run"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
