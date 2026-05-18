@@ -21,6 +21,45 @@ body.auth-page .auth-section {
   padding: 0px;
 }
 
+body.auth-success-page .app-main {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.success-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 32px 36px;
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
+}
+
+.success-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  margin: 0 auto 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(74, 123, 214, 0.2);
+}
+
+.success-note {
+  color: var(--ink-500);
+  font-size: 0.95rem;
+}
+
 .auth-section {
   padding: 64px 0;
   background: linear-gradient(180deg, rgba(74,123,214,0.06) 0%, rgba(241,246,255,0.75) 40%, rgba(255,255,255,0) 100%);

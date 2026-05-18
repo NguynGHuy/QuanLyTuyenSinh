@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tuyển sinh 2026 | Tra cứu nhanh</title>
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        if (theme) {
+          document.documentElement.dataset.theme = theme;
+        }
+      } catch (e) {
+        // ignore
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/Style/base.css}">
+  <link rel="stylesheet" th:href="@{/Style/theme.css}">
+  <link rel="stylesheet" th:href="@{/Style/components.css}">
+  <link rel="stylesheet" th:href="@{/Style/pages.css}">
+</head>
+<body class="app-body" data-theme="sky">
+  <div class="bg-orb orb-1" aria-hidden="true"></div>
+  <div class="bg-orb orb-2" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <header th:replace="fragments/nav :: nav(true)"></header>
+  <main class="app-main">
+    <section class="page-section">
+      <div class="container">
+        <div class="page-header">
+          <div>
+            <span class="eyebrow">Tra cứu nhanh</span>
+            <h1 class="h3 mb-2">Kết quả theo nguyện vọng</h1>
+            <p class="text-muted">Nhập CCCD để xem chi tiết điểm xét tuyển theo phương thức và tổ hợp môn.</p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <form class="row g-3 align-items-end" th:action="@{/tra-cuu-nhanh}" method="get">
+              <div class="col-md-6">
+                <label class="form-label" for="quickCccd">CCCD</label>
+                <input class="form-control" id="quickCccd" name="cccd" type="text" inputmode="numeric" maxlength="12" placeholder="Nhập CCCD" th:value="${cccd}">
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-primary w-100" type="submit">Tra cứu</button>
+              </div>
+            </form>
+            <div class="app-alert alert alert-danger mt-3" th:if="${error}">
+              <div class="alert-title">Không tìm thấy</div>
+              <div th:text="${error}"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4" th:if="${searchCandidate != null}">
+          <div class="col-lg-4">
+            <div class="card info-card">
+              <div class="card-body">
+                <div class="card-title">Thí sinh</div>
+                <h3 class="h5 mb-3" th:text="${searchCandidate.ho + ' ' + searchCandidate.ten}">-</h3>
+                <ul class="info-list">
+                  <li><span>CCCD</span><strong th:text="${searchCandidate.cccd}">-</strong></li>
+                  <li><span>Số báo danh</span><strong th:text="${searchCandidate.sobaodanh}">-</strong></li>
+                  <li><span>Ngày sinh</span><strong th:text="${searchCandidate.ngaySinh}">-</strong></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="card">
+              <div class="card-body">
+                <div class="card-title">Chi tiết nguyện vọng</div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle result-table">
+                    <thead>
+                      <tr>
+                        <th>NV</th>
+                        <th>Ngành</th>
+                        <th>Tổ hợp</th>
+                        <th>Phương thức</th>
+                        <th>Điểm xét tuyển</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="pref : ${searchPreferences}">
+                        <td th:text="${pref.thuTuNV}">-</td>
+                        <td th:text="${pref.majorName}">-</td>
+                        <td th:text="${pref.toHopLabel}">-</td>
+                        <td th:text="${pref.methodLabel}">-</td>
+                        <td th:text="${pref.diemXetTuyen != null ? #numbers.formatDecimal(pref.diemXetTuyen, 1, 2) : '-'}">-</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3" th:if="${#lists.isEmpty(searchPreferences)}">
+              <div class="empty-state">
+                <div class="empty-icon">📄</div>
+                <div class="fw-semibold">Chưa có dữ liệu nguyện vọng</div>
+                <div class="text-muted">Vui lòng kiểm tra lại thông tin hoặc liên hệ phòng đào tạo.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" th:src="@{/Scripts/main.js}"></script>
+</body>
+</html>

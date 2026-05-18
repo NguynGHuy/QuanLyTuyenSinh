@@ -96,7 +96,7 @@ public class ViewController {
         }
 
         session.setAttribute("candidate", candidate);
-        return "redirect:/ket-qua";
+        return "login-success";
     }
 
     @GetMapping("/logout")
@@ -117,50 +117,7 @@ public class ViewController {
             nguyenVongs = Collections.emptyList();
         }
 
-        List<Nganh> nganhList = nganhService.getAllNganhs();
-        if (nganhList == null) {
-            nganhList = Collections.emptyList();
-        }
-
-        List<ToHopMon> toHopList = toHopMonService.getAllToHopMons();
-        if (toHopList == null) {
-            toHopList = Collections.emptyList();
-        }
-
-        Map<String, String> majorNameByMa = nganhList.stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(
-                        Nganh::getManganh,
-                        Nganh::getTennganh,
-                        (left, right) -> left
-                ));
-
-        Map<String, ToHopMon> toHopByMa = toHopList.stream()
-                .filter(Objects::nonNull)
-                .collect(Collectors.toMap(
-                        ToHopMon::getMaToHop,
-                        value -> value,
-                        (left, right) -> left
-                ));
-
-        List<NguyenVongView> preferences = nguyenVongs.stream()
-                .sorted(Comparator.comparing(NguyenVong::getThuTuNV, Comparator.nullsLast(Integer::compareTo)))
-                .map(item -> {
-                    String majorName = majorNameByMa.getOrDefault(item.getMaNganh(), item.getMaNganh());
-                    String toHopLabel = buildToHopLabel(item.getMaToHop(), toHopByMa.get(item.getMaToHop()));
-                    String methodLabel = mapMethodLabel(item.getPhuongThuc());
-                    boolean admitted = isAdmitted(item.getKetQua());
-                    return new NguyenVongView(
-                            item.getThuTuNV(),
-                            majorName,
-                            toHopLabel,
-                            methodLabel,
-                            item.getDiemXetTuyen(),
-                            item.getKetQua(),
-                            admitted
-                    );
-                })
-                .collect(Collectors.toList());
+        List<NguyenVongView> preferences = buildNguyenVongViews(nguyenVongs);
 
         NguyenVongView admittedPref = preferences.stream()
                 .filter(NguyenVongView::isAdmitted)
@@ -171,6 +128,31 @@ public class ViewController {
         model.addAttribute("admittedPref", admittedPref);
         model.addAttribute("priorityPoints", calculatePriorityPoints(candidate.getDoiTuong(), candidate.getKhuVuc()));
         return "result";
+    }
+
+    @GetMapping("/tra-cuu-nhanh")
+    public String quickSearch(
+            @RequestParam(value = "cccd", required = false) String cccd,
+            Model model
+    ) {
+        String trimmedCccd = cccd == null ? "" : cccd.trim();
+        model.addAttribute("cccd", trimmedCccd);
+
+        if (trimmedCccd.isEmpty()) {
+            return "quick-search";
+        }
+
+        ThiSinh candidate = thiSinhService.getThiSinhByCccd(trimmedCccd);
+        if (candidate == null) {
+            model.addAttribute("error", "Không tìm thấy thí sinh với CCCD đã nhập.");
+            return "quick-search";
+        }
+
+        List<NguyenVong> nguyenVongs = nguyenVongService.getNguyenVongsByTsCccd(candidate.getCccd());
+        List<NguyenVongView> preferences = buildNguyenVongViews(nguyenVongs);
+        model.addAttribute("searchCandidate", candidate);
+        model.addAttribute("searchPreferences", preferences);
+        return "quick-search";
     }
 
     @GetMapping("/tinh-diem")
@@ -224,6 +206,57 @@ public class ViewController {
             return String.format("%s - %s", toHop.getMaToHop(), tenToHop);
         }
         return toHop.getMaToHop();
+    }
+
+    private List<NguyenVongView> buildNguyenVongViews(List<NguyenVong> nguyenVongs) {
+        if (nguyenVongs == null || nguyenVongs.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Nganh> nganhList = nganhService.getAllNganhs();
+        if (nganhList == null) {
+            nganhList = Collections.emptyList();
+        }
+
+        List<ToHopMon> toHopList = toHopMonService.getAllToHopMons();
+        if (toHopList == null) {
+            toHopList = Collections.emptyList();
+        }
+
+        Map<String, String> majorNameByMa = nganhList.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                        Nganh::getManganh,
+                        Nganh::getTennganh,
+                        (left, right) -> left
+                ));
+
+        Map<String, ToHopMon> toHopByMa = toHopList.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                        ToHopMon::getMaToHop,
+                        value -> value,
+                        (left, right) -> left
+                ));
+
+        return nguyenVongs.stream()
+                .sorted(Comparator.comparing(NguyenVong::getThuTuNV, Comparator.nullsLast(Integer::compareTo)))
+                .map(item -> {
+                    String majorName = majorNameByMa.getOrDefault(item.getMaNganh(), item.getMaNganh());
+                    String toHopLabel = buildToHopLabel(item.getMaToHop(), toHopByMa.get(item.getMaToHop()));
+                    String methodLabel = mapMethodLabel(item.getPhuongThuc());
+                    boolean admitted = isAdmitted(item.getKetQua());
+                    return new NguyenVongView(
+                            item.getThuTuNV(),
+                            majorName,
+                            toHopLabel,
+                            methodLabel,
+                            item.getDiemXetTuyen(),
+                            item.getKetQua(),
+                            admitted
+                    );
+                })
+                .collect(Collectors.toList());
     }
 
     private double calculatePriorityPoints(String doiTuong, String khuVuc) {
