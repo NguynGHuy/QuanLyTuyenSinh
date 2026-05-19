@@ -86,19 +86,15 @@
                         <th>Tổ hợp</th>
                         <th>Phương thức</th>
                         <th>Điểm xét tuyển</th>
-                        <th>Kết quả</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr th:each="pref : ${searchPreferences}" th:classappend="${pref.admitted} ? 'table-success' : ''">
+                      <tr th:each="pref : ${searchPreferences}">
                         <td th:text="${pref.thuTuNV}">-</td>
                         <td th:text="${pref.majorName}">-</td>
                         <td th:text="${pref.toHopLabel}">-</td>
                         <td th:text="${pref.methodLabel}">-</td>
                         <td th:text="${pref.diemXetTuyen != null ? #numbers.formatDecimal(pref.diemXetTuyen, 1, 2) : '-'}">-</td>
-                        <td>
-                          <span class="badge" th:classappend="${pref.admitted} ? ' bg-success' : ' bg-secondary'" th:text="${pref.ketQua}">-</span>
-                        </td>
                       </tr>
                     </tbody>
                   </table>
