@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
-public class ThiSinhPanel extends JPanel {
+public class ThiSinhPanel extends JPanel implements RefreshablePanel {
     private JTable table;
     private JScrollPane tableScroll;
     private DefaultTableModel tableModel;
@@ -130,6 +130,11 @@ public class ThiSinhPanel extends JPanel {
             }
         }
         UiTableColumns.refresh(table);
+    }
+
+    @Override
+    public void refreshData() {
+        loadData();
     }
 
     private void setupEvents() {
